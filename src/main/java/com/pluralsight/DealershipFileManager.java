@@ -1,11 +1,13 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Pattern;
 
 public class DealershipFileManager {
+//    public static void main(String[] args) {
+//        var x = getDealership();
+//        saveDealership(x);
+//    }
 
     public Dealership getDealership() {
         Dealership dealership = null;
@@ -34,6 +36,18 @@ public class DealershipFileManager {
     }
 
     public void saveDealership(Dealership dealership) {
-        // TODO: Implement
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("dealership1.csv"))) {
+            // Read the properties of the dealership object -> write in the first line
+            bufferedWriter.append(String.format("%s|%s|%s\n", dealership.getName(), dealership.getAddress(), dealership.getPhone()));
+            // Loop: for every vehicle, write props in line
+            for (Vehicle vehicle : dealership.getAllVehicles()) {
+                System.out.println(vehicle);
+                bufferedWriter.append(String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n", vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(), vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice()));
+            }
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
     }
 }
