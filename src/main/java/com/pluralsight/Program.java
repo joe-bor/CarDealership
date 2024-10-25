@@ -1,13 +1,8 @@
 package com.pluralsight;
 
-/**
- * Hello world!
- *
- */
-public class Program
-{
-    public static void main( String[] args )
-    {
-        System.out.println( "Hello World!" );
+public class Program {
+    public static void main(String[] args) {
+        UserInterface userInterface = new UserInterface();
+        userInterface.display();
     }
 }

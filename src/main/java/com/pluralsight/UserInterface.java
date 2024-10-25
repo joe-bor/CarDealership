@@ -7,11 +7,11 @@ public class UserInterface {
 
     private Dealership dealership;
 
-    public  void display() {
+    public void display() {
         init();
 
         Scanner scanner = new Scanner(System.in);
-
+        boolean isRunning = true;
         do {
             System.out.println("""
                     ========================================================
@@ -32,40 +32,53 @@ public class UserInterface {
                     """);
             String answer = scanner.nextLine().trim();
 
-            switch (answer){
+            switch (answer) {
                 case "1" -> processGetByPriceRequest();
                 case "2" -> processGetByMakeModelRequest();
                 case "3" -> processGetByYearRequest();
                 case "4" -> processGetByColorRequest();
                 case "5" -> processGetByMileageRequest();
                 case "6" -> processGetByVehicleTypeRequest();
-                case "7" -> processGetAllVehiclesRequest();
+                case "7" -> processAllVehiclesRequest();
                 case "8" -> processAddVehicleRequest();
                 case "9" -> processRemoveVehicleRequest();
-                case "99" -> System.out.println("Terminating...");
+                case "99" -> {
+                    isRunning = false;
+                    System.out.println("Terminating...");
+                }
                 default -> System.err.println("Invalid Option. Try again!");
             }
-        } while (!scanner.nextLine().equalsIgnoreCase("99"));
 
+        } while (isRunning);
+        scanner.close();
     }
 
-    public void processGetByPriceRequest(){}
+    public void processGetByPriceRequest() {
+    }
 
-    public void processGetByMakeModelRequest(){}
+    public void processGetByMakeModelRequest() {
+    }
 
-    public void processGetByYearRequest(){}
+    public void processGetByYearRequest() {
+    }
 
-    public void processGetByColorRequest(){}
+    public void processGetByColorRequest() {
+    }
 
-    public void processGetByMileageRequest(){}
+    public void processGetByMileageRequest() {
+    }
 
-    public void processGetByVehicleTypeRequest(){}
+    public void processGetByVehicleTypeRequest() {
+    }
 
-    public void processGetAllVehiclesRequest(){}
+    public void processGetAllVehiclesRequest() {
+    }
 
-    public void processAddVehicleRequest(){}
+    public void processAddVehicleRequest() {
+    }
 
-    public void processRemoveVehicleRequest(){}
+    public void processRemoveVehicleRequest() {
+    }
 
     private void init() {
         DealershipFileManager dfm = new DealershipFileManager();

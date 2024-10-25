@@ -8,11 +8,11 @@ import java.util.regex.Pattern;
 public class DealershipFileManager {
 
     public Dealership getDealership() {
+        Dealership dealership = null;
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("dealership1.csv"))) {
 
             String input;
             int lineCount = 0;
-            Dealership dealership = null;
             while ((input = bufferedReader.readLine()) != null) {
 
                 // Line 1 => pipe-delimited info about the dealership
@@ -30,7 +30,7 @@ public class DealershipFileManager {
             System.err.println(e.getMessage());
         }
 
-        return null;
+        return dealership;
     }
 
     public void saveDealership(Dealership dealership) {
