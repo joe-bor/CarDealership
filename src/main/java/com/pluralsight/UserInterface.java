@@ -143,8 +143,24 @@ public class UserInterface {
     }
 
     public void processRemoveVehicleRequest() {
-        // TODO: implement!!
-//        this.dealership.removeVehicle();
+        System.out.println("Provide the VIN of the vehicle you want to remove");
+        int vin = SCANNER.nextInt();
+        Vehicle vehicleToBeRemoved = null;
+
+        for (int i = 0; i < this.dealership.getInventory().size(); i++) {
+            Vehicle currVehicle = this.dealership.getInventory().get(i);
+
+            if (currVehicle.getVin() == vin) {
+                System.out.println("Found matching vehicle... ");
+                vehicleToBeRemoved = this.dealership.getInventory().remove(i);
+            }
+        }
+
+        if (vehicleToBeRemoved == null) {
+            DealershipFileManager dfm = new DealershipFileManager();
+            dfm.saveDealership(this.dealership);
+            System.out.println("Successfully removed vehicle from inventory...");
+        }
     }
 
     private void init() {
