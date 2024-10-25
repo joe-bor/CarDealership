@@ -6,11 +6,8 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class DealershipFileManager {
-    public static void main(String[] args) {
-        getDealership();
-    }
 
-    public static Dealership getDealership() {
+    public Dealership getDealership() {
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader("dealership1.csv"))) {
 
             String input;
@@ -36,7 +33,7 @@ public class DealershipFileManager {
         return null;
     }
 
-    public static void saveDealership(Dealership dealership) {
+    public void saveDealership(Dealership dealership) {
         // TODO: Implement
     }
 }
