@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class UserInterface {
@@ -168,6 +169,23 @@ public class UserInterface {
         if (vehicleToBeRemoved == null) {
             System.out.println("Vehicle not found");
         }
+    }
+
+    public void processRemoveVehicleRequest2() {
+        System.out.println("Provide the VIN of the vehicle you want to remove");
+        int vin = SCANNER.nextInt();
+        SCANNER.nextLine();
+
+        Optional<Vehicle> vehicleToBeRemoved = this.dealership.getInventory().stream()
+                .filter(vehicle -> vehicle.getVin() == vin).findFirst();
+
+        vehicleToBeRemoved.ifPresentOrElse((vehicle) -> {
+            this.dealership.getInventory().remove(vehicle);
+            System.out.println("Successfully removed vehicle from inventory");
+            DealershipFileManager dfm = new DealershipFileManager();
+            System.out.println("\nHere's the current inventory:");
+            dfm.saveDealership(this.dealership);
+        }, () -> System.out.println("Vehicle not found"));
     }
 
     private void init() {
