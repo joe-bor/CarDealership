@@ -30,6 +30,7 @@ public class UserInterface {
                     7 - List ALL Vehicles
                     8 - Add a vehicle
                     9 - Remove a vehicle
+                    88 - Switch Dealership
                     99 - Quit
                     
                     """);
@@ -45,6 +46,7 @@ public class UserInterface {
                 case "7" -> processAllVehiclesRequest();
                 case "8" -> processAddVehicleRequest();
                 case "9" -> processRemoveVehicleRequest();
+                case "88" -> init();
                 case "99" -> {
                     isRunning = false;
                     System.out.println("Terminating...");
