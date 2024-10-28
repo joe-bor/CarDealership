@@ -1,5 +1,6 @@
 package com.pluralsight;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -189,8 +190,10 @@ public class UserInterface {
     }
 
     private void init() {
+        String dealershipName = pickDealership();
+
         DealershipFileManager dfm = new DealershipFileManager();
-        this.dealership = dfm.getDealership();
+        this.dealership = dealershipName.trim().isBlank() ? dfm.getDealership() : dfm.getDealership(dealershipName);
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
@@ -201,5 +204,20 @@ public class UserInterface {
 
     public void processAllVehiclesRequest() {
         displayVehicles(this.dealership.getAllVehicles());
+    }
+
+    private String pickDealership() {
+        String root = System.getProperty("user.dir");
+        File file = new File(root);
+        File[] files = file.listFiles();
+
+        System.out.println("\nPlease pick one from the available dealerships: ");
+        for (File f : files) {
+            if (f.getName().endsWith(".csv"))
+                System.out.println(f.getName().replace(".csv", ""));
+        }
+        System.out.println("\n**Leave BLANK for default dealership**");
+        System.out.print("Enter dealership name: ");
+        return SCANNER.nextLine().trim() + ".csv";
     }
 }

@@ -35,6 +35,32 @@ public class DealershipFileManager {
         return dealership;
     }
 
+    public Dealership getDealership(String dealershipName) {
+        Dealership dealership = null;
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(dealershipName))) {
+
+            String input;
+            int lineCount = 0;
+            while ((input = bufferedReader.readLine()) != null) {
+
+                // Line 1 => pipe-delimited info about the dealership
+                String[] dealerParts = input.split(Pattern.quote("|"));
+                if (lineCount == 0) {
+                    dealership = new Dealership(dealerParts[0], dealerParts[1], dealerParts[2]);
+                } else {
+                    // Line 2+ => vehicle information
+                    Vehicle vehicle = new Vehicle(Integer.parseInt(dealerParts[0]), Integer.parseInt(dealerParts[1]), dealerParts[2], dealerParts[3], dealerParts[4], dealerParts[5], Integer.parseInt(dealerParts[6]), Double.parseDouble(dealerParts[7]));
+                    dealership.addVehicle(vehicle);
+                }
+                lineCount++;
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return dealership;
+    }
+
     public void saveDealership(Dealership dealership) {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("dealership1.csv"))) {
             // Read the properties of the dealership object -> write in the first line
