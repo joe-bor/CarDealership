@@ -15,10 +15,10 @@ public class UserInterface {
 
         boolean isRunning = true;
         do {
-            System.out.println("""
+            System.out.println(String.format("""
                     
                     ========================================================
-                                    MAIN MENU
+                                    MAIN MENU -  %s
                     ========================================================
                     What would you to do?
                     1 - Find vehicles within a price range
@@ -33,7 +33,7 @@ public class UserInterface {
                     88 - Switch Dealership
                     99 - Quit
                     
-                    """);
+                    """, this.dealership.getName()));
             String answer = SCANNER.nextLine().trim();
 
             switch (answer) {
@@ -220,6 +220,7 @@ public class UserInterface {
         }
         System.out.println("\n**Leave BLANK for default dealership**");
         System.out.print("Enter dealership name: ");
-        return SCANNER.nextLine().trim() + ".csv";
+        String dealershipName = SCANNER.nextLine().trim();
+        return dealershipName.isBlank() ? "" : dealershipName + ".csv";
     }
 }
