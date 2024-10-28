@@ -14,6 +14,7 @@ public class UserInterface {
         boolean isRunning = true;
         do {
             System.out.println("""
+                    
                     ========================================================
                                     MAIN MENU
                     ========================================================
@@ -145,6 +146,7 @@ public class UserInterface {
     public void processRemoveVehicleRequest() {
         System.out.println("Provide the VIN of the vehicle you want to remove");
         int vin = SCANNER.nextInt();
+        SCANNER.nextLine();
         Vehicle vehicleToBeRemoved = null;
 
         for (int i = 0; i < this.dealership.getInventory().size(); i++) {
@@ -156,10 +158,15 @@ public class UserInterface {
             }
         }
 
-        if (vehicleToBeRemoved == null) {
-            DealershipFileManager dfm = new DealershipFileManager();
-            dfm.saveDealership(this.dealership);
+        if (vehicleToBeRemoved != null) {
             System.out.println("Successfully removed vehicle from inventory...");
+            DealershipFileManager dfm = new DealershipFileManager();
+            System.out.println("\nHere's the current inventory:");
+            dfm.saveDealership(this.dealership);
+        }
+
+        if (vehicleToBeRemoved == null) {
+            System.out.println("Vehicle not found");
         }
     }
 
