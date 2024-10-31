@@ -1,6 +1,6 @@
 package com.pluralsight;
 
-public class SaleContract extends Contract {
+public class SalesContract extends Contract {
 
     private double salesTax;
     private double recordingFee;
@@ -8,7 +8,7 @@ public class SaleContract extends Contract {
     boolean financed;
     private double monthlyPayment;
 
-    public SaleContract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold, double salesTax, double recordingFee, double processingFee, boolean financed) {
+    public SalesContract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold, double salesTax, double recordingFee, double processingFee, boolean financed) {
         super(contractDate, customerName, customerEmail, vehicleSold);
         this.salesTax = salesTax;
         this.recordingFee = recordingFee;
@@ -55,12 +55,30 @@ public class SaleContract extends Contract {
 
     @Override
     public double getTotalPrice() {
+        double totalPrice = 0;
+        double vehiclePrice = this.getVehicleSold().getPrice();
 
-        return 0;
+        totalPrice += vehiclePrice;
+        totalPrice += totalPrice * this.getSalesTax() / 100;
+        totalPrice += this.getRecordingFee();
+        totalPrice += this.getVehicleSold().getPrice() < 10000 ? 295 : 495; // processing fee
+
+        return totalPrice;
     }
 
     @Override
     public double getMonthlyPayment() {
-        return monthlyPayment;
+        double totalPrice = this.getTotalPrice();
+        double interestRate = totalPrice > 10000 ? 4.25 : 5.25;
+        double monthlyInterest = interestRate / 12 / 100;
+        double loanTerm = totalPrice > 10000 ? 48 : 24;
+
+        if (this.isFinanced()) {
+            return totalPrice * monthlyInterest / (1 - Math.pow(1 + monthlyInterest, -loanTerm));
+
+        } else {
+            return 0;
+        }
+
     }
 }

@@ -1,10 +1,12 @@
 package com.pluralsight;
 
-public class LeaseContract extends Contract{
+public class LeaseContract extends Contract {
 
     private double expectedEndingValue;
     private double leaseFee;
     private double monthlyPayment;
+    private final double LEASE_TERM = 36.0;
+    private final double LEASE_FINANCE_RATE = 4.0;
 
     public LeaseContract(String contractDate, String customerName, String customerEmail, Vehicle vehicleSold, double expectedEndingValue, double leaseFee) {
         super(contractDate, customerName, customerEmail, vehicleSold);
@@ -30,12 +32,22 @@ public class LeaseContract extends Contract{
 
     @Override
     public double getTotalPrice() {
-        return 0;
+        return this.getMonthlyPayment() * LEASE_TERM;
     }
 
     @Override
     public double getMonthlyPayment() {
-        return monthlyPayment;
+        double carPrice = this.getVehicleSold().getPrice();
+        double leaseFee = carPrice * (this.getLeaseFee() / 100); // % of the original car price
+        double loanAmount = carPrice - this.getExpectedEndingValue() + leaseFee;
+        double monthlyInterestRate = LEASE_FINANCE_RATE / 12 / 100;
+
+//        System.out.println(carPrice);
+//        System.out.println(leaseFee);
+//        System.out.println(loanAmount);
+//        System.out.println(monthlyInterestRate);
+
+        return loanAmount * monthlyInterestRate / (1 - Math.pow(1 + monthlyInterestRate, -LEASE_TERM));
     }
 
     @Override
