@@ -1,4 +1,4 @@
-# CardDealership
+# CarDealership
 
 Console-based dealership application made with `Java`. This app would sit on the desk of a salesman or sale manager at a dealership.
 
