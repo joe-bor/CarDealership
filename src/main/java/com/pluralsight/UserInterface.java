@@ -1,6 +1,8 @@
 package com.pluralsight;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -30,6 +32,7 @@ public class UserInterface {
                     7 - List ALL Vehicles
                     8 - Add a vehicle
                     9 - Remove a vehicle
+                    10 - Buy or Lease a vehicle
                     88 - Switch Dealership
                     99 - Quit
                     
@@ -46,6 +49,7 @@ public class UserInterface {
                 case "7" -> processAllVehiclesRequest();
                 case "8" -> processAddVehicleRequest();
                 case "9" -> processRemoveVehicleRequest();
+                case "10" -> processVehicleContract();
                 case "88" -> init();
                 case "99" -> {
                     isRunning = false;
@@ -56,6 +60,54 @@ public class UserInterface {
 
         } while (isRunning);
         SCANNER.close();
+    }
+
+    private void processVehicleContract() {
+        System.out.print("\nPlease provide the VIN of the vehicle you would like to buy/lease (a vehicle over 3 yrs old can't be leased) \n");
+        int vin = SCANNER.nextInt();
+        SCANNER.nextLine();
+
+        Optional<Vehicle> matchingVehicle = this.dealership.getInventory().stream().filter(vehicle -> vehicle.getVin() == vin).findFirst();
+        matchingVehicle.ifPresentOrElse(vehicle -> {
+                    System.out.println("Matching vehicle found");
+
+                    int vehicleAge = LocalDate.now().getYear() - vehicle.getYear();
+                    System.out.printf("Would you like to buy %sthis vehicle? \n", vehicleAge > 3 ? "" : "or rent ");
+
+                    String answer = SCANNER.nextLine();
+                    System.out.print("What is your name? \n");
+                    String name = SCANNER.nextLine();
+                    System.out.print("What is your email? \n");
+                    String email = SCANNER.nextLine();
+                    String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+                    Contract contract = null;
+                    if (answer.equalsIgnoreCase("buy")) {
+                        System.out.print("Would you like to finance? (true or false) \n");
+                        boolean financed = SCANNER.nextBoolean();
+                        SCANNER.nextLine();
+
+                        final double SALES_TAX = 5.0;
+                        final double RECORDING_FEE = 100.0;
+                        final double PROCESSING_FEE = vehicle.getPrice() < 10_000 ? 295.0 : 495.0;
+
+                        contract = new SalesContract(todaysDate, name, email, vehicle, SALES_TAX, RECORDING_FEE, PROCESSING_FEE, financed);
+                    } else {
+                        final double EXPECTED_ENDING_VALUE = vehicle.getPrice() * .5;
+                        final double LEASE_FEE = 7;
+
+                        contract = new LeaseContract(todaysDate, name, email, vehicle, EXPECTED_ENDING_VALUE, LEASE_FEE);
+                    }
+
+                    if (contract != null) {
+                        ContractFileManager contractFileManager = new ContractFileManager();
+                        contractFileManager.saveContract(contract);
+
+                        processRemoveVehicleRequest2(vehicle);
+                    }
+
+                }
+                , () -> System.out.printf("Vehicle with vin %d not found\n", vin));
     }
 
     public void processGetByPriceRequest() {
@@ -174,21 +226,12 @@ public class UserInterface {
         }
     }
 
-    public void processRemoveVehicleRequest2() {
-        System.out.println("Provide the VIN of the vehicle you want to remove");
-        int vin = SCANNER.nextInt();
-        SCANNER.nextLine();
-
-        Optional<Vehicle> vehicleToBeRemoved = this.dealership.getInventory().stream()
-                .filter(vehicle -> vehicle.getVin() == vin).findFirst();
-
-        vehicleToBeRemoved.ifPresentOrElse((vehicle) -> {
+    public void processRemoveVehicleRequest2(Vehicle vehicle) {
             this.dealership.getInventory().remove(vehicle);
-            System.out.println("Successfully removed vehicle from inventory");
+
             DealershipFileManager dfm = new DealershipFileManager();
             System.out.println("\nHere's the current inventory:");
             dfm.saveDealership(this.dealership);
-        }, () -> System.out.println("Vehicle not found"));
     }
 
     private void init() {
