@@ -8,9 +8,9 @@ public class AdminInterface {
     private final Scanner SCANNER = new Scanner(System.in);
     private List<Contract> contractList;
     private boolean loggedIn = false;
+    private boolean displayed = true;
 
     public void display() {
-        boolean isShown = true;
 
         do {
             if (loggedIn) {
@@ -18,7 +18,7 @@ public class AdminInterface {
             } else {
                 loginDisplay();
             }
-        } while (isShown);
+        } while (displayed);
     }
 
     public void loginDisplay() {
@@ -68,6 +68,7 @@ public class AdminInterface {
                 case "X" -> {
                     System.out.println("Exiting...");
                     isShown = false;
+                    displayed = false;
                 }
                 default -> System.out.println("Invalid option");
             }
