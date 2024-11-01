@@ -35,6 +35,7 @@ public class UserInterface {
                     10 - Buy or Lease a vehicle
                     88 - Switch Dealership
                     99 - Quit
+                    00 - Admin
                     
                     """, this.dealership.getName()));
             String answer = SCANNER.nextLine().trim();
@@ -55,11 +56,17 @@ public class UserInterface {
                     isRunning = false;
                     System.out.println("Terminating...");
                 }
+                case "00" -> processAdminRequest();
                 default -> System.err.println("Invalid Option. Try again!");
             }
 
         } while (isRunning);
         SCANNER.close();
+    }
+
+    private void processAdminRequest() {
+        AdminInterface adminInterface = new AdminInterface();
+        adminInterface.display();
     }
 
     private void processVehicleContract() {

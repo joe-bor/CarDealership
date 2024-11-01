@@ -88,17 +88,17 @@ public class ContractFileManager {
                 Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
 
                 // Sale contract
-                if (lineArr.length == 18 && contractType.equals("SALE")) {
+                if (contractType.equals("SALE")) {
                     double salesTax = Double.parseDouble(lineArr[12]);
                     double recordingFee = Double.parseDouble(lineArr[13]);
                     double processingFee = Double.parseDouble(lineArr[14]);
-                    boolean financed = lineArr[15].equals("NO") ? false : true;
-                    double monthlyPayment = Double.parseDouble(lineArr[16]);
+                    boolean financed = lineArr[16].equals("NO") ? false : true;
+                    double monthlyPayment = Double.parseDouble(lineArr[17]);
 
                     contract = new SalesContract(contractDate, name, email, vehicle, salesTax, recordingFee, processingFee, financed);
                 }
 
-                if (lineArr.length == 16 && contractType.equals("LEASE")) {
+                if (contractType.equals("LEASE")) {
                     double endingValue = Double.parseDouble(lineArr[12]);
                     double leaseFee = Double.parseDouble(lineArr[13]);
 
@@ -107,7 +107,7 @@ public class ContractFileManager {
 
                 contractList.add(contract);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.err.println(e);
         } finally {
             return contractList;

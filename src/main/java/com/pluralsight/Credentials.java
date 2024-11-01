@@ -38,7 +38,8 @@ public abstract class Credentials {
     public static void storeCredentials(String userName, String password) {
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(CREDENTIALS_FILE, true))) {
-            bufferedWriter.append(String.format("%s|%s", userName, hashPassword(password)));
+            bufferedWriter.append(String.format("%s|%s\n", userName, hashPassword(password)));
+            CREDENTIALS.put(userName,hashPassword(password));
         } catch (IOException e) {
             System.err.println(e);
         }
