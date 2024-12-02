@@ -154,14 +154,14 @@ public class UserInterface {
         int maxYear = SCANNER.nextInt();
         SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehicleByYear(minYear, maxYear));
+        displayVehicles(VEHICLE_DAO.getVehicleByYearRange(minYear, maxYear));
     }
 
     public void processGetByColorRequest() {
         System.out.print("What is the color? ");
         String color = SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehicleByColor(color));
+        displayVehicles(VEHICLE_DAO.getVehicleByColor(color));
     }
 
     public void processGetByMileageRequest() {
@@ -172,14 +172,14 @@ public class UserInterface {
         int maxMileage = SCANNER.nextInt();
         SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehicleByMileage(minMileage, maxMileage));
+        displayVehicles(VEHICLE_DAO.getVehicleByMileageRange(minMileage, maxMileage));
     }
 
     public void processGetByVehicleTypeRequest() {
         System.out.print("What is the vehicle type? ");
         String vehicleType = SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehicleByType(vehicleType));
+        displayVehicles(VEHICLE_DAO.getVehicleByType(vehicleType));
     }
 
     public void processGetAllVehiclesRequest() {
@@ -209,9 +209,10 @@ public class UserInterface {
         SCANNER.nextLine();
 
         System.out.println("Adding new vehicle to inventory... ");
-        this.dealership.addVehicle(new Vehicle(vin, year, make, model, vehicleType, color, mileage, price));
-        DealershipFileManager dfm = new DealershipFileManager();
-        dfm.saveDealership(this.dealership);
+        VEHICLE_DAO.addVehicle(vin, year, make, model, vehicleType, color, mileage, price);
+//        this.dealership.addVehicle(new Vehicle(vin, year, make, model, vehicleType, color, mileage, price));
+//        DealershipFileManager dfm = new DealershipFileManager();
+//        dfm.saveDealership(this.dealership);
         System.out.println("Successfully added new vehicle!\n");
     }
 

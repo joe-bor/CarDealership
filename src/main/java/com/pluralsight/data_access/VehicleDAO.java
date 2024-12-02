@@ -2,14 +2,47 @@ package com.pluralsight.data_access;
 
 import com.pluralsight.model.Vehicle;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleDAO extends AbstractDAO {
+
+    // CREATE
+    public void addVehicle(int vin, int year, String make, String model, String vehicleType, String color, int mileage, double price) {
+        String query = """
+                INSERT INTO Vehicles
+                (`VIN`, `Year`, `Make`, `Model`, `Type`, `Color`, `Mileage`, `Price`)
+                VALUES
+                (?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setInt(1, vin);
+            preparedStatement.setInt(2, year);
+            preparedStatement.setString(3, make);
+            preparedStatement.setString(4, model);
+            preparedStatement.setString(5, vehicleType);
+            preparedStatement.setString(6, color);
+            preparedStatement.setInt(7, mileage);
+            preparedStatement.setDouble(8, price);
+
+            preparedStatement.executeUpdate();
+
+            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
+                while (resultSet.next()) {
+                    System.out.printf("#%d key was added \n", resultSet.getLong(1));
+//                    var newVehicle = new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+//                    );
+//                    System.out.println("newVehicle = " + newVehicle);
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<Vehicle> getVehicleByPriceRange(double min, double max) {
         List<Vehicle> vehicles = new ArrayList<>();
@@ -127,7 +160,7 @@ public class VehicleDAO extends AbstractDAO {
         return vehicles;
     }
 
-    public List<Vehicle> getVehicleByPMileageRange(int min, int max) {
+    public List<Vehicle> getVehicleByMileageRange(int min, int max) {
         List<Vehicle> vehicles = new ArrayList<>();
 
         String query = """
