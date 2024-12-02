@@ -18,7 +18,7 @@ public class VehicleDAO extends AbstractDAO {
                 """;
 
         try (Connection connection = getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, vin);
             preparedStatement.setInt(2, year);
             preparedStatement.setString(3, make);
@@ -28,22 +28,20 @@ public class VehicleDAO extends AbstractDAO {
             preparedStatement.setInt(7, mileage);
             preparedStatement.setDouble(8, price);
 
-            preparedStatement.executeUpdate();
+            int rowsAffected = preparedStatement.executeUpdate();
 
-            try (ResultSet resultSet = preparedStatement.getGeneratedKeys()) {
-                while (resultSet.next()) {
-                    System.out.printf("#%d key was added \n", resultSet.getLong(1));
-//                    var newVehicle = new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
-//                    );
-//                    System.out.println("newVehicle = " + newVehicle);
-                }
+            if (rowsAffected > 0) {
+                System.out.printf("Vehicle with VIN #%d was successfully added.\n", vin);
+            } else {
+                System.out.println("Vehicle insertion failed.");
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error adding vehicle with VIN " + vin, e);
         }
     }
 
+    // READ
     public List<Vehicle> getVehicleByPriceRange(double min, double max) {
         List<Vehicle> vehicles = new ArrayList<>();
 
@@ -215,5 +213,29 @@ public class VehicleDAO extends AbstractDAO {
         }
 
         return vehicles;
+    }
+
+    // UPDATE
+
+    // DELETE
+    public void removeVehicle(int vin) {
+        String query = """
+                DELETE FROM Vehicles
+                WHERE vin = ?
+                """;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, vin);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.printf("Vehicle with VIN #%d was successfully removed. \n", vin);
+            } else {
+                System.out.printf("No vehicle found with VIN #%d to remove. \n", vin);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

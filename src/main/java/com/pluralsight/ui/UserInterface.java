@@ -220,27 +220,28 @@ public class UserInterface {
         System.out.println("Provide the VIN of the vehicle you want to remove");
         int vin = SCANNER.nextInt();
         SCANNER.nextLine();
-        Vehicle vehicleToBeRemoved = null;
+//        Vehicle vehicleToBeRemoved = null;
+        VEHICLE_DAO.removeVehicle(vin);
 
-        for (int i = 0; i < this.dealership.getInventory().size(); i++) {
-            Vehicle currVehicle = this.dealership.getInventory().get(i);
-
-            if (currVehicle.getVin() == vin) {
-                System.out.println("Found matching vehicle... ");
-                vehicleToBeRemoved = this.dealership.getInventory().remove(i);
-            }
-        }
-
-        if (vehicleToBeRemoved != null) {
-            System.out.println("Successfully removed vehicle from inventory...");
-            DealershipFileManager dfm = new DealershipFileManager();
-            System.out.println("\nHere's the current inventory:");
-            dfm.saveDealership(this.dealership);
-        }
-
-        if (vehicleToBeRemoved == null) {
-            System.out.println("Vehicle not found");
-        }
+//        for (int i = 0; i < this.dealership.getInventory().size(); i++) {
+//            Vehicle currVehicle = this.dealership.getInventory().get(i);
+//
+//            if (currVehicle.getVin() == vin) {
+//                System.out.println("Found matching vehicle... ");
+//                vehicleToBeRemoved = this.dealership.getInventory().remove(i);
+//            }
+//        }
+//
+//        if (vehicleToBeRemoved != null) {
+//            System.out.println("Successfully removed vehicle from inventory...");
+//            DealershipFileManager dfm = new DealershipFileManager();
+//            System.out.println("\nHere's the current inventory:");
+//            dfm.saveDealership(this.dealership);
+//        }
+//
+//        if (vehicleToBeRemoved == null) {
+//            System.out.println("Vehicle not found");
+//        }
     }
 
     public void processRemoveVehicleRequest2(Vehicle vehicle) {
