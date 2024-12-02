@@ -3,9 +3,7 @@ package com.pluralsight.ui;
 import com.pluralsight.data_access.LeaseContractDAO;
 import com.pluralsight.data_access.SalesContractDAO;
 import com.pluralsight.model.contract.Contract;
-import com.pluralsight.ContractFileManager;
 import com.pluralsight.model.Credentials;
-import com.pluralsight.model.contract.LeaseContract;
 
 import java.util.ArrayList;
 import java.util.List;
