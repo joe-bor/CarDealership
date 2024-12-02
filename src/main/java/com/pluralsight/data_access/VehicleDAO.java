@@ -70,4 +70,117 @@ public class VehicleDAO extends AbstractDAO {
         return vehicles;
     }
 
+    public List<Vehicle> getVehicleByYearRange(int min, int max) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = """
+                SELECT *
+                FROM Vehicles
+                WHERE year BETWEEN ? AND ?
+                """;
+
+        try (Connection connection = this.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, min);
+            preparedStatement.setInt(2, max);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    vehicles.add(
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+                            ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return vehicles;
+    }
+
+    public List<Vehicle> getVehicleByColor(String color) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = """
+                SELECT *
+                FROM Vehicles
+                WHERE color = ?
+                """;
+
+        try (Connection connection = this.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, color);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    vehicles.add(
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+                            ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return vehicles;
+    }
+
+    public List<Vehicle> getVehicleByPMileageRange(int min, int max) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = """
+                SELECT *
+                FROM Vehicles
+                WHERE mileage BETWEEN ? AND ?
+                """;
+
+        try (Connection connection = this.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setInt(1, min);
+            preparedStatement.setInt(2, max);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    vehicles.add(
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+                            ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return vehicles;
+    }
+
+    public List<Vehicle> getVehicleByType(String type) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = """
+                SELECT *
+                FROM Vehicles
+                WHERE type = ?
+                """;
+
+        try (Connection connection = this.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, type);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    vehicles.add(
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+                            ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return vehicles;
+    }
 }
