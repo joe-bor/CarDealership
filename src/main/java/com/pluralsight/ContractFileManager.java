@@ -1,5 +1,10 @@
 package com.pluralsight;
 
+import com.pluralsight.model.Vehicle;
+import com.pluralsight.model.contract.Contract;
+import com.pluralsight.model.contract.LeaseContract;
+import com.pluralsight.model.contract.SalesContract;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;

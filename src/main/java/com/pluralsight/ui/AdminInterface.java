@@ -1,4 +1,8 @@
-package com.pluralsight;
+package com.pluralsight.ui;
+
+import com.pluralsight.model.contract.Contract;
+import com.pluralsight.ContractFileManager;
+import com.pluralsight.model.Credentials;
 
 import java.util.List;
 import java.util.Scanner;

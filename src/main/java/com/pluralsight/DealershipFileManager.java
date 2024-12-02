@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import com.pluralsight.model.Dealership;
+import com.pluralsight.model.Vehicle;
+
 import java.io.*;
 import java.util.regex.Pattern;
 

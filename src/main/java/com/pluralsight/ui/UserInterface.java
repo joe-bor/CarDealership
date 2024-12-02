@@ -1,4 +1,11 @@
-package com.pluralsight;
+package com.pluralsight.ui;
+
+import com.pluralsight.*;
+import com.pluralsight.model.Dealership;
+import com.pluralsight.model.Vehicle;
+import com.pluralsight.model.contract.Contract;
+import com.pluralsight.model.contract.LeaseContract;
+import com.pluralsight.model.contract.SalesContract;
 
 import java.io.File;
 import java.time.LocalDate;
