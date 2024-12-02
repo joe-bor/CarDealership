@@ -108,3 +108,23 @@ VALUES
 (2, '33456'),
 (2, '44567'),
 (2, '55678');
+
+-- INSERTING Tesla Dealership
+INSERT INTO `Dealerships` (`Name`, `Address`, `Phone`)
+VALUES ('Tesla Dealership', '7890 Elon Way, Palo Alto, CA', '650-555-4321');
+
+INSERT INTO `Vehicles` (`VIN`, `Year`, `Make`, `Model`, `Type`, `Color`, `Mileage`, `Price`)
+VALUES
+('11111', 2022, 'Tesla', 'Model S', 'Sedan', 'Black', 12000, 89999.00),
+('22222', 2021, 'Tesla', 'Model 3', 'Sedan', 'White', 30000, 45999.00),
+('33333', 2023, 'Tesla', 'Cybertruck', 'Truck', 'Silver', 50, 79999.00),
+('44444', 2020, 'Tesla', 'Model X', 'SUV', 'Blue', 25000, 99999.00),
+('55555', 2023, 'Tesla', 'Model Y', 'SUV', 'Red', 5000, 64999.00);
+
+INSERT INTO `Inventory` (`DealershipID`, `VIN`)
+VALUES
+(3, '11111'),
+(3, '22222'),
+(3, '33333'),
+(3, '44444'),
+(3, '55555');
