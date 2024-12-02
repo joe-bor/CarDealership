@@ -245,6 +245,58 @@ public class VehicleDAO extends AbstractDAO {
         return vehicles;
     }
 
+    public Vehicle getVehicleOfASalesContract(int contractID) {
+
+        String query = """
+                SELECT *
+                FROM Vehicles v
+                JOIN `SalesContracts` sc
+                ON v.VIN = sc.VIN
+                WHERE sc.ContractID = ?
+                """;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, contractID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    public Vehicle getVehicleOfALeaseContract(int contractID) {
+
+        String query = """
+                SELECT *
+                FROM Vehicles v
+                JOIN `LeaseContracts` lc
+                ON v.VIN = lc.VIN
+                WHERE lc.ContractID = ?
+                """;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, contractID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
     // UPDATE
 
     // DELETE

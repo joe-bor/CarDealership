@@ -225,10 +225,6 @@ public class UserInterface {
 
     public void processRemoveVehicleRequest2(Vehicle vehicle) {
         this.dealership.getInventory().remove(vehicle);
-
-        DealershipFileManager dfm = new DealershipFileManager();
-        System.out.println("\nHere's the current inventory:");
-        dfm.saveDealership(this.dealership);
     }
 
     private void init() {

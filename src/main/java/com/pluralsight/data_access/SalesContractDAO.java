@@ -5,6 +5,8 @@ import com.pluralsight.model.contract.Contract;
 import com.pluralsight.model.contract.SalesContract;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalesContractDAO extends AbstractDAO {
 
@@ -43,34 +45,34 @@ public class SalesContractDAO extends AbstractDAO {
     }
 
     // READ
-//    public List<SalesContract> readSalesContracts() {
-//        String query = """
-//                SELECT * FROM `SalesContracts`
-//                """;
-//        List<SalesContract> contracts = new ArrayList<>();
-//
-//        try (Connection connection = getConnection();
-//             PreparedStatement preparedStatement = connection.prepareStatement(query);
-//             ResultSet resultSet = preparedStatement.executeQuery()) {
-//
-//            while (resultSet.next()) {
-//                SalesContract contract = new SalesContract(
-//                        resultSet.getString("Date"),
-//                        resultSet.getString("CustomerName"),
-//                        resultSet.getString("CustomerEmail"),
-//                        resultSet.getString("VIN"), // Vehicle not VIN (needs a new function in VehicleDAO that retrieves Vehicle assosicaited with Contract ID)
-//                        resultSet.getDouble("SalesTax"),
-//                        resultSet.getDouble("RecordingFee"),
-//                        resultSet.getDouble("ProcessingFee"),
-//                        resultSet.getBoolean("Financed")
-//                );
-//                contracts.add(contract);
-//            }
-//
-//        } catch (SQLException e) {
-//            throw new RuntimeException("Error reading sales contracts", e);
-//        }
-//
-//        return contracts;
-//    }
+    public List<SalesContract> readSalesContracts() {
+        String query = """
+                SELECT * FROM `SalesContracts`
+                """;
+        List<SalesContract> contracts = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                SalesContract contract = new SalesContract(
+                        resultSet.getString("Date"),
+                        resultSet.getString("CustomerName"),
+                        resultSet.getString("CustomerEmail"),
+                        new VehicleDAO().getVehicleOfASalesContract(resultSet.getInt("ContractID")),
+                        resultSet.getDouble("SalesTax"),
+                        resultSet.getDouble("RecordingFee"),
+                        resultSet.getDouble("ProcessingFee"),
+                        resultSet.getBoolean("Financed")
+                );
+                contracts.add(contract);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error reading sales contracts", e);
+        }
+
+        return contracts;
+    }
 }

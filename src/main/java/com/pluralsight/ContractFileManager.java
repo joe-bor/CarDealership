@@ -14,19 +14,6 @@ public class ContractFileManager {
 
     private final String CONTRACT_FILE_PATH = "contracts.csv";
 
-//    public static void main(String[] args) {
-//        ContractFileManager contractFileManager = new ContractFileManager();
-//
-//        Vehicle vehicleLease = new Vehicle(37846, 2021, "Chevrolet", "Silverado", "truck", "Black", 2750, 31995.00);
-//        LeaseContract leaseContract = new LeaseContract("20210928", "Zachary Westly", "zach@texas.com", vehicleLease, 15997.50, 7.0);
-//
-//        Vehicle vehicleSales = new Vehicle(10112, 1993, "Ford", "Explorer", "SUV", "Red", 525123, 995.00);
-//        SalesContract salesContract = new SalesContract("20210928", "Dana Wyatt", "dana@texas.com", vehicleSales, 49.75, 100.00, 295.00, false);
-//
-//        contractFileManager.saveContract(salesContract);
-//        contractFileManager.saveContract(leaseContract);
-//    }
-
     public void saveContract(Contract contract) {
         boolean isSalesContract = contract instanceof SalesContract ? true : false;
         Vehicle vehicleInContract = contract.getVehicleSold();

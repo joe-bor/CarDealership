@@ -4,6 +4,8 @@ import com.pluralsight.model.contract.Contract;
 import com.pluralsight.model.contract.LeaseContract;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LeaseContractDAO extends AbstractDAO {
 
@@ -37,5 +39,35 @@ public class LeaseContractDAO extends AbstractDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error creating lease contract", e);
         }
+    }
+
+    // READ
+    public List<LeaseContract> readLeaseContracts() {
+        String query = """
+                SELECT * FROM `LeaseContracts`
+                """;
+        List<LeaseContract> contracts = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while (resultSet.next()) {
+                LeaseContract contract = new LeaseContract(
+                        resultSet.getString("Date"),
+                        resultSet.getString("CustomerName"),
+                        resultSet.getString("CustomerEmail"),
+                        new VehicleDAO().getVehicleOfALeaseContract(resultSet.getInt("ContractID")),
+                        resultSet.getDouble("ExpectedEndingValue"),
+                        resultSet.getDouble("LeaseFee")
+                );
+                contracts.add(contract);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Error reading lease contracts", e);
+        }
+
+        return contracts;
     }
 }
