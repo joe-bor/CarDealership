@@ -1,19 +1,35 @@
-package com.pluralsight;
+package com.pluralsight.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Dealership {
+
+
+    private int id;
     private String name;
     private String address;
     private String phone;
     private List<Vehicle> inventory;
+
+    public Dealership(int id, String name, String address, String phone) {
+        this(name, address, phone);
+        this.id = id;
+    }
 
     public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.inventory = new ArrayList<>();
+    }
+
+    public Dealership(int id, String name, String address, String phone, List<Vehicle> inventory) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.inventory = inventory;
     }
 
     // OTHER METHODS:
@@ -60,6 +76,10 @@ public class Dealership {
     }
 
     // GETTERS & SETTERS:
+    public int getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
