@@ -2,6 +2,8 @@ package com.pluralsight.ui;
 
 import com.pluralsight.*;
 import com.pluralsight.data_access.DealershipDAO;
+import com.pluralsight.data_access.LeaseContractDAO;
+import com.pluralsight.data_access.SalesContractDAO;
 import com.pluralsight.data_access.VehicleDAO;
 import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
@@ -22,6 +24,8 @@ public class UserInterface {
     private static final Scanner SCANNER = new Scanner(System.in);
     private final VehicleDAO VEHICLE_DAO = new VehicleDAO();
     private final DealershipDAO DEALERSHIP_DAO = new DealershipDAO();
+    private final SalesContractDAO SALES_CONTRACT_DAO = new SalesContractDAO();
+    private final LeaseContractDAO LEASE_CONTRACT_DAO = new LeaseContractDAO();
 
     public void display() {
         init();
@@ -110,19 +114,16 @@ public class UserInterface {
                         final double PROCESSING_FEE = vehicle.getPrice() < 10_000 ? 295.0 : 495.0;
 
                         contract = new SalesContract(todaysDate, name, email, vehicle, SALES_TAX, RECORDING_FEE, PROCESSING_FEE, financed);
+                        SALES_CONTRACT_DAO.createSalesContract((SalesContract) contract);
                     } else {
                         final double EXPECTED_ENDING_VALUE = vehicle.getPrice() * .5;
                         final double LEASE_FEE = 7;
 
                         contract = new LeaseContract(todaysDate, name, email, vehicle, EXPECTED_ENDING_VALUE, LEASE_FEE);
+                        LEASE_CONTRACT_DAO.createLeaseContract((LeaseContract) contract);
                     }
 
-                    if (contract != null) {
-                        ContractFileManager contractFileManager = new ContractFileManager();
-                        contractFileManager.saveContract(contract);
-
-                        processRemoveVehicleRequest2(vehicle);
-                    }
+                    processRemoveVehicleRequest2(vehicle);
 
                 }
                 , () -> System.out.printf("Vehicle with vin %d not found\n", vin));
@@ -212,9 +213,6 @@ public class UserInterface {
 
         System.out.println("Adding new vehicle to inventory... ");
         VEHICLE_DAO.addVehicle(vin, year, make, model, vehicleType, color, mileage, price);
-//        this.dealership.addVehicle(new Vehicle(vin, year, make, model, vehicleType, color, mileage, price));
-//        DealershipFileManager dfm = new DealershipFileManager();
-//        dfm.saveDealership(this.dealership);
         System.out.println("Successfully added new vehicle!\n");
     }
 
