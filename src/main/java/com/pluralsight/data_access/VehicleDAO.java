@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class VehicleDAO extends AbstractDAO {
@@ -41,7 +40,7 @@ public class VehicleDAO extends AbstractDAO {
         return vehicles;
     }
 
-    public List<Vehicle> getVehicleByPMakeModel(String make, String model) {
+    public List<Vehicle> getVehicleByMakeModel(String make, String model) {
         List<Vehicle> vehicles = new ArrayList<>();
 
         String query = """
@@ -54,8 +53,8 @@ public class VehicleDAO extends AbstractDAO {
         try (Connection connection = this.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query);
         ) {
-            preparedStatement.setString(1, "'%" + make + "'");
-            preparedStatement.setString(2, "'%" + model + "'");
+            preparedStatement.setString(1, "%" + make + "%");
+            preparedStatement.setString(2, "%" + model + "%");
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 while (resultSet.next()) {

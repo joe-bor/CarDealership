@@ -19,6 +19,7 @@ public class UserInterface {
 
     private Dealership dealership;
     private static final Scanner SCANNER = new Scanner(System.in);
+    private final VehicleDAO VEHICLE_DAO = new VehicleDAO();
 
     public void display() {
         init();
@@ -133,8 +134,7 @@ public class UserInterface {
         double maxPrice = SCANNER.nextDouble();
         SCANNER.nextLine();
 
-        VehicleDAO vehicleDAO = new VehicleDAO();
-        displayVehicles(vehicleDAO.getVehicleByPriceRange(minPrice, maxPrice));
+        displayVehicles(VEHICLE_DAO.getVehicleByPriceRange(minPrice, maxPrice));
     }
 
     public void processGetByMakeModelRequest() {
@@ -143,7 +143,7 @@ public class UserInterface {
         System.out.print("What is the model? ");
         String model = SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehiclesByMakeModel(make, model));
+        displayVehicles(VEHICLE_DAO.getVehicleByMakeModel(make, model));
     }
 
     public void processGetByYearRequest() {
