@@ -1,6 +1,7 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.*;
+import com.pluralsight.data_access.DealershipDAO;
 import com.pluralsight.data_access.VehicleDAO;
 import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
@@ -20,6 +21,7 @@ public class UserInterface {
     private Dealership dealership;
     private static final Scanner SCANNER = new Scanner(System.in);
     private final VehicleDAO VEHICLE_DAO = new VehicleDAO();
+    private final DealershipDAO DEALERSHIP_DAO = new DealershipDAO();
 
     public void display() {
         init();
@@ -245,18 +247,15 @@ public class UserInterface {
     }
 
     public void processRemoveVehicleRequest2(Vehicle vehicle) {
-            this.dealership.getInventory().remove(vehicle);
+        this.dealership.getInventory().remove(vehicle);
 
-            DealershipFileManager dfm = new DealershipFileManager();
-            System.out.println("\nHere's the current inventory:");
-            dfm.saveDealership(this.dealership);
+        DealershipFileManager dfm = new DealershipFileManager();
+        System.out.println("\nHere's the current inventory:");
+        dfm.saveDealership(this.dealership);
     }
 
     private void init() {
-        String dealershipName = pickDealership();
-
-        DealershipFileManager dfm = new DealershipFileManager();
-        this.dealership = dealershipName.trim().isBlank() ? dfm.getDealership() : dfm.getDealership(dealershipName);
+        this.dealership = pickDealership();
     }
 
     private void displayVehicles(List<Vehicle> vehicles) {
@@ -269,19 +268,19 @@ public class UserInterface {
         displayVehicles(this.dealership.getAllVehicles());
     }
 
-    private String pickDealership() {
-        String root = System.getProperty("user.dir");
-        File file = new File(root);
-        File[] files = file.listFiles();
+    private Dealership pickDealership() {
+        var dealerships = DEALERSHIP_DAO.getAllDealerships();
 
-        System.out.println("\nPlease pick one from the available dealerships: ");
-        for (File f : files) {
-            if (f.getName().endsWith(".csv"))
-                System.out.println(f.getName().replace(".csv", ""));
-        }
-        System.out.println("\n**Leave BLANK for default dealership**");
-        System.out.print("Enter dealership name: ");
-        String dealershipName = SCANNER.nextLine().trim();
-        return dealershipName.isBlank() ? "" : dealershipName + ".csv";
+        System.out.println("Pick one from the list of dealerships:");
+        dealerships.forEach(dealership -> {
+            System.out.printf("""
+                    [%d] - %s
+                    """, dealership.getId(), dealership.getName());
+        });
+
+        int id = SCANNER.nextInt();
+        SCANNER.nextLine();
+
+        return DEALERSHIP_DAO.getDealershipByID(id);
     }
 }

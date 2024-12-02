@@ -215,6 +215,36 @@ public class VehicleDAO extends AbstractDAO {
         return vehicles;
     }
 
+    public List<Vehicle> getVehiclesOfADealership(int dealershipID) {
+        List<Vehicle> vehicles = new ArrayList<>();
+
+        String query = """
+                SELECT *
+                FROM Vehicles v
+                JOIN Inventory i
+                ON v.VIN = i.VIN
+                JOIN Dealerships d
+                ON i.DealershipID = d.DealershipID
+                WHERE d.DealershipID = ?
+                """;
+
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, dealershipID);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    vehicles.add(
+                            new Vehicle(resultSet.getInt("VIN"), resultSet.getInt("Year"), resultSet.getString("Make"), resultSet.getString("Model"), resultSet.getString("Type"), resultSet.getString("Color"), resultSet.getInt("Mileage"), resultSet.getDouble("Price")
+                            ));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return vehicles;
+    }
+
     // UPDATE
 
     // DELETE
