@@ -1,6 +1,7 @@
 package com.pluralsight.ui;
 
 import com.pluralsight.*;
+import com.pluralsight.data_access.VehicleDAO;
 import com.pluralsight.model.Dealership;
 import com.pluralsight.model.Vehicle;
 import com.pluralsight.model.contract.Contract;
@@ -132,7 +133,8 @@ public class UserInterface {
         double maxPrice = SCANNER.nextDouble();
         SCANNER.nextLine();
 
-        displayVehicles(this.dealership.getVehiclesByPrice(minPrice, maxPrice));
+        VehicleDAO vehicleDAO = new VehicleDAO();
+        displayVehicles(vehicleDAO.getVehicleByPriceRange(minPrice, maxPrice));
     }
 
     public void processGetByMakeModelRequest() {

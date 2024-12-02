@@ -66,3 +66,24 @@ CREATE TABLE `SalesContracts` (
     CONSTRAINT `FK_SalesContracts_Vehicles` FOREIGN KEY (`VIN`) REFERENCES `Vehicles` (`VIN`),
     CONSTRAINT `PK_SalesContracts` PRIMARY KEY (`ContractID`)
 );
+
+
+-- INSERTING FORD Dealership
+INSERT INTO `Dealerships` (`Name`, `Address`, `Phone`)
+VALUES ('Ford Dealership', '4567 Ford Rd, Dearborn, MI', '313-555-9876');
+
+INSERT INTO `Vehicles` (`VIN`, `Year`, `Make`, `Model`, `Type`, `Color`, `Mileage`, `Price`)
+VALUES
+('66789', 2019, 'Ford', 'F-150', 'Truck', 'Black', 62000, 34995.00),
+('77890', 2020, 'Ford', 'Mustang', 'Coupe', 'Red', 12000, 39995.00),
+('88901', 2022, 'Ford', 'Explorer', 'SUV', 'Gray', 8000, 45995.00),
+('99012', 2018, 'Ford', 'Escape', 'SUV', 'Blue', 45000, 21995.00),
+('10123', 2021, 'Ford', 'Bronco', 'SUV', 'Green', 10000, 52995.00);
+
+INSERT INTO `Inventory` (`DealershipID`, `VIN`)
+VALUES
+(1, '66789'),
+(1, '77890'),
+(1, '88901'),
+(1, '99012'),
+(1, '10123');
