@@ -87,3 +87,24 @@ VALUES
 (1, '88901'),
 (1, '99012'),
 (1, '10123');
+
+
+-- INSERTING Toyota Dealership
+INSERT INTO `Dealerships` (`Name`, `Address`, `Phone`)
+VALUES ('Toyota Dealership', '1234 Toyota Blvd, Torrance, CA', '310-555-1234');
+
+INSERT INTO `Vehicles` (`VIN`, `Year`, `Make`, `Model`, `Type`, `Color`, `Mileage`, `Price`)
+VALUES
+('11234', 2018, 'Toyota', 'Camry', 'Sedan', 'White', 42000, 18995.00),
+('22345', 2021, 'Toyota', 'RAV4', 'SUV', 'Blue', 15000, 29995.00),
+('33456', 2017, 'Toyota', 'Tacoma', 'Truck', 'Black', 83000, 25995.00),
+('44567', 2023, 'Toyota', 'Highlander', 'SUV', 'Silver', 5000, 47995.00),
+('55678', 2020, 'Toyota', 'Corolla', 'Sedan', 'Red', 25000, 18995.00);
+
+INSERT INTO `Inventory` (`DealershipID`, `VIN`)
+VALUES
+(2, '11234'),
+(2, '22345'),
+(2, '33456'),
+(2, '44567'),
+(2, '55678');
